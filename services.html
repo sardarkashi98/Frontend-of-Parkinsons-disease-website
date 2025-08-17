@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinson's Detection Services | Park Vision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+         /* Global Styles */
+        :root {
+            --primary-color: #3d5a80;
+            --secondary-color: #ff9800;
+            --accent-color: #ee6c4d;
+            --dark-color: #293241;
+            --light-color: #e0fbfc;
+            --success-color: #4caf50;
+            --warning-color: #ffc107;
+            --danger-color: #f44336;
+            --transition: all 0.3s ease;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb, #3d5a80);
+            background-size: 400% 400%;
+            animation: gradientAnimation 12s ease infinite;
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #121212, #1e1e1e, #000);
+            color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        body.dark-mode header {
+            background: rgba(30, 30, 30, 0.9);
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        body.dark-mode .logo {
+            color: var(--secondary-color);
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        /* Dark Mode Toggle */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+        }
+
+        .toggle-mode {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin-left: 1rem;
+        }
+
+        .toggle-mode input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: '';
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--secondary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: var(--text-shadow);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .hero .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--secondary-color);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+        }
+
+        .hero .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 152, 0, 0.6);
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        body.dark-mode .section-title h2 {
+            color: #fff;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+
+        body.dark-mode .section-title p {
+            color: #ccc;
+        }
+
+        /* Services Cards */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        body.dark-mode .service-card {
+            background: #2d2d2d;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--secondary-color);
+        }
+
+        .service-card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            position: relative;
+        }
+
+        .service-card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            z-index: 0;
+        }
+
+        .service-card-body {
+            padding: 1.5rem;
+        }
+
+        .image-preview-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .image-preview {
+            transform: scale(1.05);
+        }
+
+        .service-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        body.dark-mode .form-group label {
+            color: #fff;
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: #f9f9f9;
+        }
+
+        body.dark-mode .form-control {
+            background: #3d3d3d;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(238, 108, 77, 0.4);
+        }
+
+        .btn i {
+            font-size: 1rem;
+        }
+
+        .prediction-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(61, 90, 128, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        body.dark-mode .prediction-result {
+            background: rgba(61, 90, 128, 0.3);
+        }
+
+        .prediction-result h3 {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-result p {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+        }
+
+        body.dark-mode .prediction-result p {
+            color: #eee;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Diet Plan Styles */
+        .diet-plan {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(61, 90, 128, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        body.dark-mode .diet-plan {
+            background: rgba(61, 90, 128, 0.3);
+        }
+
+        .diet-plan h3 {
+            font-size: 1.1rem;
+            color: var(--success-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .diet-day {
+            margin-bottom: 1rem;
+        }
+
+        .diet-day h4 {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .diet-day h4 {
+            color: var(--secondary-color);
+        }
+
+        .diet-meals {
+            list-style-type: none;
+        }
+
+        .diet-meals li {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        body.dark-mode .diet-meals li {
+            color: #eee;
+        }
+
+        .diet-meals li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+        }
+
+        /* Chatbot Styles */
+        .chatbot-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .chatbot-icon:hover {
+            transform: scale(1.1);
+            background-color: var(--accent-color);
+        }
+
+        .chatbot-icon img {
+            width: 70%;
+            height: 70%;
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background-color: var(--dark-color);
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .chatbot-container.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background-color: var(--secondary-color);
+            color: #000;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: var(--primary-color);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            transition: var(--transition);
+        }
+
+        .user-message {
+            background-color: var(--accent-color);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        body.dark-mode .bot-message {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+            background-color: var(--dark-color);
+            border-top: 1px solid var(--primary-color);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        body.dark-mode .chatbot-input input {
+            background-color: #444;
+        }
+
+        .chatbot-input button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            color: #000;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .chatbot-input button:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Loading animation */
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+            width: fit-content;
+        }
+
+        body.dark-mode .typing-indicator {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 100px;
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .hero {
+                padding-top: 150px;
+                height: auto;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .btn {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .chatbot-container {
+                width: 90%;
+                right: 5%;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo"><i class="fas fa-brain"></i> PARK VISION</a>
+        <div class="toggle-container">
+            <span>Dark Mode</span>
+            <label class="toggle-mode">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="animate__animated animate__fadeInDown">Advanced Parkinson's Detection</h1>
+        <p class="animate__animated animate__fadeInUp">Utilize our cutting-edge AI models to detect Parkinson's disease through various methods including image analysis and voice parameters.</p>
+        <a href="#services" class="btn animate__animated animate__fadeIn">Explore Services</a>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Detection Services</h2>
+                <p>Multiple approaches to identify Parkinson's disease at early stages with high accuracy</p>
+            </div>
+            
+            <div class="services-container">
+                <!-- Wave Image Card -->
+                <div class="service-card animate__animated animate__fadeInUp">
+                    <div class="service-card-header">
+                        <h3>Wave Image Analysis</h3>
+                        <p>Upload a wave drawing image for Parkinson's detection</p>
+                    </div>
+                    <div class="service-card-body">
+                        <div class="image-preview-container">
+                            <img id="wavePreview" class="image-preview" src="https://via.placeholder.com/350x200?text=Wave+Image+Preview" alt="Wave Image Preview">
+                        </div>
+                        <form id="waveForm" method="POST" enctype="multipart/form-data" action="/predictwaves" class="service-form">
+                            <div class="form-group">
+                                <label for="waveImage">Upload Wave Image</label>
+                                <input type="file" name="wave" accept="image/*" id="waveImage" class="form-control" onchange="previewImage('waveImage', 'wavePreview')" required>
+                            </div>
+                            <button type="submit" class="btn" id="submitWave">
+                                <i class="fas fa-chart-line"></i> Analyze Wave
+                            </button>
+                        </form>
+                        {% if prediction_wave %}
+                            <div class="prediction-result">
+                                <h3>Analysis Result</h3>
+                                <p>{{ prediction_wave }}</p>
+                            </div>
+                        {% endif %}
+                        {% if Error and Error.wave %}
+                            <p class="error-message">{{ Error.wave }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Spiral Image Card -->
+                <div class="service-card animate__animated animate__fadeInUp">
+                    <div class="service-card-header">
+                        <h3>Spiral Image Analysis</h3>
+                        <p>Upload a spiral drawing image for Parkinson's detection</p>
+                    </div>
+                    <div class="service-card-body">
+                        <div class="image-preview-container">
+                            <img id="spiralPreview" class="image-preview" src="https://via.placeholder.com/350x200?text=Spiral+Image+Preview" alt="Spiral Image Preview">
+                        </div>
+                        <form id="spiralForm" method="POST" enctype="multipart/form-data" action="/predictspirals" class="service-form">
+                            <div class="form-group">
+                                <label for="spiralImage">Upload Spiral Image</label>
+                                <input type="file" name="spiral" accept="image/*" id="spiralImage" class="form-control" onchange="previewImage('spiralImage', 'spiralPreview')" required>
+                            </div>
+                            <button type="submit" class="btn" id="submitSpiral">
+                                <i class="fas fa-project-diagram"></i> Analyze Spiral
+                            </button>
+                        </form>
+                        {% if prediction_spiral %}
+                            <div class="prediction-result">
+                                <h3>Analysis Result</h3>
+                                <p>{{ prediction_spiral }}</p>
+                            </div>
+                        {% endif %}
+                        {% if Error and Error.spiral %}
+                            <p class="error-message">{{ Error.spiral }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Random Forest Model Card -->
+                <div class="service-card animate__animated animate__fadeInUp">
+                    <div class="service-card-header">
+                        <h3>Voice Parameter Analysis</h3>
+                        <p>Random Forest classifier using key voice features</p>
+                    </div>
+                    <div class="service-card-body">
+                        <form id="parkinsonForm" method="POST" action="/predictparkinsons" class="service-form">
+                            <div class="form-group">
+                                <label for="mdvp_shimmer">MDVP Shimmer</label>
+                                <input type="number" step="0.01" name="mdvp_shimmer" class="form-control" placeholder="Enter MDVP Shimmer value" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mdvp_apq">MDVP APQ</label>
+                                <input type="number" step="0.01" name="mdvp_apq" class="form-control" placeholder="Enter MDVP APQ value" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="spread1">Spread1</label>
+                                <input type="number" step="0.01" name="spread1" class="form-control" placeholder="Enter Spread1 value" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="spread2">Spread2</label>
+                                <input type="number" step="0.01" name="spread2" class="form-control" placeholder="Enter Spread2 value" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ppe">PPE</label>
+                                <input type="number" step="0.01" name="ppe" class="form-control" placeholder="Enter PPE value" required>
+                            </div>
+                            <button type="submit" class="btn" id="submitParkinson">
+                                <i class="fas fa-microphone-alt"></i> Analyze Voice
+                            </button>
+                        </form>
+                        {% if prediction_parkinsons %}
+                            <div class="prediction-result">
+                                <h3>Analysis Result</h3>
+                                <p>{{ prediction_parkinsons }}</p>
+                            </div>
+                        {% endif %}
+                        {% if Error and Error.parkinsons %}
+                            <p class="error-message">{{ Error.parkinsons }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+               <!-- XGBoost Model Card -->
+<div class="service-card animate__animated animate__fadeInUp">
+    <div class="service-card-header">
+        <h3>Comprehensive Voice Analysis</h3>
+        <p>XGBoost classifier using full set of voice parameters</p>
+    </div>
+    <div class="service-card-body">
+        <form id="oldParkinsonForm" method="POST" action="/predictoldparkinsons" class="service-form">
+            <div class="form-group">
+                <label for="MDVP:Fo(Hz)">MDVP:Fo(Hz)</label>
+                <input type="number" step="0.01" name="MDVP:Fo(Hz)" class="form-control" placeholder="Enter MDVP:Fo(Hz)" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:Fhi(Hz)">MDVP:Fhi(Hz)</label>
+                <input type="number" step="0.01" name="MDVP:Fhi(Hz)" class="form-control" placeholder="Enter MDVP:Fhi(Hz)" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:Flo(Hz)">MDVP:Flo(Hz)</label>
+                <input type="number" step="0.01" name="MDVP:Flo(Hz)" class="form-control" placeholder="Enter MDVP:Flo(Hz)" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:Jitter(%)">MDVP:Jitter(%)</label>
+                <input type="number" step="0.01" name="MDVP:Jitter(%)" class="form-control" placeholder="Enter MDVP:Jitter(%)" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:Jitter(Abs)">MDVP:Jitter(Abs)</label>
+                <input type="number" step="0.01" name="MDVP:Jitter(Abs)" class="form-control" placeholder="Enter MDVP:Jitter(Abs)" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:RAP">MDVP:RAP</label>
+                <input type="number" step="0.01" name="MDVP:RAP" class="form-control" placeholder="Enter MDVP:RAP" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:PPQ">MDVP:PPQ</label>
+                <input type="number" step="0.01" name="MDVP:PPQ" class="form-control" placeholder="Enter MDVP:PPQ" required>
+            </div>
+            <div class="form-group">
+                <label for="Jitter:DDP">Jitter:DDP</label>
+                <input type="number" step="0.01" name="Jitter:DDP" class="form-control" placeholder="Enter Jitter:DDP" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:Shimmer">MDVP:Shimmer</label>
+                <input type="number" step="0.01" name="MDVP:Shimmer" class="form-control" placeholder="Enter MDVP:Shimmer" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:Shimmer(dB)">MDVP:Shimmer(dB)</label>
+                <input type="number" step="0.01" name="MDVP:Shimmer(dB)" class="form-control" placeholder="Enter MDVP:Shimmer(dB)" required>
+            </div>
+            <div class="form-group">
+                <label for="Shimmer:APQ3">Shimmer:APQ3</label>
+                <input type="number" step="0.01" name="Shimmer:APQ3" class="form-control" placeholder="Enter Shimmer:APQ3" required>
+            </div>
+            <div class="form-group">
+                <label for="Shimmer:APQ5">Shimmer:APQ5</label>
+                <input type="number" step="0.01" name="Shimmer:APQ5" class="form-control" placeholder="Enter Shimmer:APQ5" required>
+            </div>
+            <div class="form-group">
+                <label for="MDVP:APQ">MDVP:APQ</label>
+                <input type="number" step="0.01" name="MDVP:APQ" class="form-control" placeholder="Enter MDVP:APQ" required>
+            </div>
+            <div class="form-group">
+                <label for="Shimmer:DDA">Shimmer:DDA</label>
+                <input type="number" step="0.01" name="Shimmer:DDA" class="form-control" placeholder="Enter Shimmer:DDA" required>
+            </div>
+            <div class="form-group">
+                <label for="NHR">NHR</label>
+                <input type="number" step="0.01" name="NHR" class="form-control" placeholder="Enter NHR" required>
+            </div>
+            <div class="form-group">
+                <label for="HNR">HNR</label>
+                <input type="number" step="0.01" name="HNR" class="form-control" placeholder="Enter HNR" required>
+            </div>
+            <div class="form-group">
+                <label for="RPDE">RPDE</label>
+                <input type="number" step="0.01" name="RPDE" class="form-control" placeholder="Enter RPDE" required>
+            </div>
+            <div class="form-group">
+                <label for="DFA">DFA</label>
+                <input type="number" step="0.01" name="DFA" class="form-control" placeholder="Enter DFA" required>
+            </div>
+            <div class="form-group">
+                <label for="spread1">spread1</label>
+                <input type="number" step="0.01" name="spread1" class="form-control" placeholder="Enter spread1" required>
+            </div>
+            <div class="form-group">
+                <label for="spread2">spread2</label>
+                <input type="number" step="0.01" name="spread2" class="form-control" placeholder="Enter spread2" required>
+            </div>
+            <div class="form-group">
+                <label for="D2">D2</label>
+                <input type="number" step="0.01" name="D2" class="form-control" placeholder="Enter D2" required>
+            </div>
+            <div class="form-group">
+                <label for="PPE">PPE</label>
+                <input type="number" step="0.01" name="PPE" class="form-control" placeholder="Enter PPE" required>
+            </div>
+
+            <button type="submit" class="btn" id="submitOldParkinson">
+                <i class="fas fa-robot"></i> Advanced Analysis
+            </button>
+        </form>
+
+        {% if prediction_old_parkinsons %}
+            <div class="prediction-result">
+                <h3>Analysis Result</h3>
+                <p>{{ prediction_old_parkinsons }}</p>
+            </div>
+        {% endif %}
+
+        {% if Error and Error.old_parkinsons %}
+            <p class="error-message">{{ Error.old_parkinsons }}</p>
+        {% endif %}
+    </div>
+</div>
+
+                
+                <!-- Diet Plan Card -->
+                <div class="service-card animate__animated animate__fadeInUp">
+                    <div class="service-card-header">
+                        <h3>Personalized Diet Plan</h3>
+                        <p>7-day nutrition plan for Parkinson's patients</p>
+                    </div>
+                    <div class="service-card-body">
+                        <button id="generateDietPlan" class="btn">
+                            <i class="fas fa-utensils"></i> Generate Diet Plan
+                        </button>
+                        <div id="dietPlanOutput" class="diet-plan"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot Icon -->
+    <div class="chatbot-icon" id="chatbotIcon">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Chatbot">
+    </div>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <span>Parkinson's Assistant</span>
+            <span class="chatbot-close" id="chatbotClose">×</span>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Messages will appear here -->
+            <div class="message bot-message">
+                Hello! I'm your Parkinson's assistant. How can I help you today?
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your message...">
+            <button id="chatbotSend">Send</button>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Check for saved user preference
+        if (localStorage.getItem('darkMode')) {
+            body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            body.classList.toggle('dark-mode');
+            
+            // Save user preference
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.removeItem('darkMode');
+            }
+        });
+
+        // Back to Top Button
+        const backToTopButton = document.querySelector('.back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Function to preview the uploaded image
+        function previewImage(inputId, previewId) {
+            const file = document.getElementById(inputId).files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                document.getElementById(previewId).src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById(previewId).src = 'https://via.placeholder.com/350x200?text=Image+Preview';
+            }
+        }
+
+         // Generate Diet Plan
+         document.getElementById('generateDietPlan').addEventListener('click', function() {
+            const dietPlanOutput = document.getElementById('dietPlanOutput');
+            dietPlanOutput.innerHTML = '';
+
+            const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
+            const meals = ['Breakfast', 'Lunch', 'Snack', 'Dinner'];
+            const foods = [
+                ['Oatmeal with fruits', 'Grilled chicken salad', 'Yogurt with nuts', 'Steamed vegetables with quinoa'],
+                ['Scrambled eggs with toast', 'Vegetable stir-fry', 'Apple with peanut butter', 'Baked salmon with asparagus'],
+                ['Smoothie bowl', 'Quinoa and black bean bowl', 'Trail mix', 'Grilled shrimp with zucchini noodles'],
+                ['Avocado toast', 'Chicken wrap', 'Protein bar', 'Turkey meatballs with spaghetti squash'],
+                ['Greek yogurt with honey', 'Tuna salad', 'Dark chocolate', 'Beef stir-fry with broccoli'],
+                ['Pancakes with maple syrup', 'Lentil soup', 'Cheese and crackers', 'Roast chicken with sweet potatoes'],
+                ['Chia pudding', 'Falafel with hummus', 'Fruit salad', 'Stuffed bell peppers']
+            ];
+
+            days.forEach((day, index) => {
+                const dayPlan = document.createElement('div');
+                dayPlan.innerHTML = `<h3>${day}</h3><ul>`;
+                meals.forEach((meal, mealIndex) => {
+                    dayPlan.innerHTML += `<li><strong>${meal}:</strong> ${foods[index][mealIndex]}</li>`;
+                });
+                dayPlan.innerHTML += '</ul>';
+                dietPlanOutput.appendChild(dayPlan);
+            });
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Chatbot functionality with new backend
+        const chatbotIcon = document.getElementById('chatbotIcon');
+        const chatbotContainer = document.getElementById('chatbotContainer');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotSend = document.getElementById('chatbotSend');
+
+        const API_KEY = "AIzaSyCQyFjzUIfzGT2rRqycxyCST4Y8J5g8dqI";  // Replace with your API key
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+        // Toggle chatbot visibility
+        chatbotIcon.addEventListener('click', () => {
+            chatbotContainer.classList.toggle('active');
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotContainer.classList.remove('active');
+        });
+
+        // Function to add a message to the chat
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        // Function to show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('typing-indicator');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            chatbotMessages.appendChild(typingDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        // Function to hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Generate API response
+        const generateAPIResponse = async (userMessage) => {
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        contents: [{ 
+                            role: "user", 
+                            parts: [{ text: userMessage }] 
+                        }] 
+                    }),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error?.message || "Failed to get response");
+                return data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
+            } catch (error) {
+                console.error("API Error:", error);
+                return "Sorry, I'm having trouble responding right now. Please try again later.";
+            }
+        };
+
+        // Handle send button click
+        chatbotSend.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const message = chatbotInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                chatbotInput.value = '';
+                
+                showTypingIndicator();
+                try {
+                    const apiResponse = await generateAPIResponse(message);
+                    hideTypingIndicator();
+                    addMessage(apiResponse, false);
+                } catch (error) {
+                    hideTypingIndicator();
+                    addMessage("Sorry, something went wrong. Please try again.", false);
+                }
+            }
+        });
+
+        // Handle Enter key press
+        chatbotInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const message = chatbotInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatbotInput.value = '';
+                    
+                    showTypingIndicator();
+                    try {
+                        const apiResponse = await generateAPIResponse(message);
+                        hideTypingIndicator();
+                        addMessage(apiResponse, false);
+                    } catch (error) {
+                        hideTypingIndicator();
+                        addMessage("Sorry, something went wrong. Please try again.", false);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

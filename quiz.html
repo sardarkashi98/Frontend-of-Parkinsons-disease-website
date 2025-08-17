@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinson's Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298, #3d5a80);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            margin: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        .quiz-container h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .quiz-container p {
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .quiz-container button {
+            padding: 12px 24px;
+            background-color: #ff6347;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .quiz-container button:hover {
+            background-color: #e5533d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-container button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Questions Container */
+        .questions-container {
+            display: none;
+            text-align: left;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .questions-container.active {
+            display: block;
+        }
+
+        .question-item {
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            animation: fadeInUp 0.5s ease;
+            transition: all 0.3s ease;
+        }
+
+        .question-item:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .question-item h3 {
+            color: #ff6347;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .question-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #ff6347;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .question-item .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .question-item .options label {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #e0e0e0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .question-item .options label:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .question-item .options input[type="radio"] {
+            display: none;
+        }
+
+        .question-item .options input[type="radio"]:checked + label {
+            background-color: #ff6347;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 0 0 2px white;
+        }
+
+        /* Selected answer indicator */
+        .question-item .options input[type="radio"]:checked + label::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        /* Answer summary */
+        .selected-answer {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: #ffcc00;
+            font-weight: normal;
+        }
+
+        /* Result Container */
+        .result-container {
+            display: none;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-container h2 {
+            color: #ff6347;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .result-container p {
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .result-container .percentage {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff6347;
+            animation: fadeIn 1s ease;
+            margin: 20px 0;
+        }
+
+        .result-container .status {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #e0e0e0;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .fact-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .fact-container p {
+            margin: 0;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #ff6347;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: right;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .answered-count {
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff6347;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e5533d;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .quiz-container {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .quiz-container h1 {
+                font-size: 2rem;
+            }
+            
+            .question-item h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="start-container">
+            <h1>Parkinson's Quiz</h1>
+            <p>Answer the following questions to assess potential symptoms of Parkinson's disease.</p>
+            <button id="start-btn">Start Quiz <i class="fas fa-arrow-right"></i></button>
+        </div>
+        <div class="questions-container">
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Progress: <span class="answered-count" id="answered-count">0</span>/<span id="total-questions">25</span></span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div id="all-questions"></div>
+            <button id="submit-btn" disabled>
+                <i class="fas fa-paper-plane"></i> Submit Answers
+            </button>
+        </div>
+        <div class="result-container">
+            <h2>Your Quiz Results</h2>
+            <div class="percentage" id="percentage"></div>
+            <div class="status" id="status"></div>
+            <div class="fact-container" id="fact-container"></div>
+            <button id="restart-btn">
+                <i class="fas fa-redo"></i> Take Quiz Again
+            </button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { question: "Do you experience tremors or shaking in your hands, arms, legs, or jaw?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have difficulty with balance or coordination?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you feel stiffness in your limbs or trunk?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have trouble walking or taking steps?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you notice a decrease in facial expressions?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience a soft or low voice when speaking?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have difficulty writing or notice your handwriting becoming smaller?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you feel fatigued or unusually tired throughout the day?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have trouble sleeping or experience restless nights?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience constipation or digestive issues?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have difficulty swallowing or chewing food?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you notice a loss of smell or taste?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you feel depressed or anxious frequently?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience memory problems or confusion?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have trouble concentrating or focusing on tasks?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience dizziness or lightheadedness?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you notice a change in your posture, such as stooping or leaning forward?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have difficulty initiating movement or feel 'frozen' in place?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience muscle cramps or spasms?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you notice a decrease in your ability to perform fine motor tasks, like buttoning a shirt?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you feel a sense of slowness in your movements (bradykinesia)?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience urinary problems or incontinence?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you have trouble with speech, such as slurring or mumbling?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you feel a sense of stiffness or rigidity in your muscles?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" },
+            { question: "Do you experience a loss of automatic movements, like blinking or smiling?", options: ["Never", "Rarely", "Sometimes", "Often"], answer: "Often" }
+        ];
+        
+        const facts = [
+            "Parkinson's disease affects nearly 1 million people in the U.S. and 10 million worldwide.",
+            "Men are 1.5 times more likely to develop Parkinson's than women.",
+            "The average age of Parkinson's diagnosis is 60 years.",
+            "Exercise has been shown to improve symptoms and slow disease progression.",
+            "Parkinson's is caused by the loss of dopamine-producing cells in the brain.",
+            "James Parkinson first described the disease in 1817.",
+            "There is no cure for Parkinson's, but treatments can help manage symptoms.",
+            "Parkinson's is the second most common neurodegenerative disorder after Alzheimer's.",
+            "Deep brain stimulation is a surgical treatment option for advanced Parkinson's.",
+            "Parkinson's can affect non-motor functions, such as mood and cognition."
+        ];
+        
+        // DOM Elements
+        const startContainer = document.querySelector('.start-container');
+        const questionsContainer = document.querySelector('.questions-container');
+        const resultContainer = document.querySelector('.result-container');
+        const allQuestionsElement = document.getElementById('all-questions');
+        const submitButton = document.getElementById('submit-btn');
+        const percentageElement = document.getElementById('percentage');
+        const statusElement = document.getElementById('status');
+        const factContainer = document.getElementById('fact-container');
+        const restartButton = document.getElementById('restart-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-percent');
+        const answeredCount = document.getElementById('answered-count');
+        const totalQuestions = document.getElementById('total-questions');
+        
+        // Initialize quiz
+        totalQuestions.textContent = questions.length;
+        
+        // Event listeners
+        document.getElementById('start-btn').addEventListener('click', startQuiz);
+        submitButton.addEventListener('click', showResult);
+        restartButton.addEventListener('click', restartQuiz);
+        
+        function startQuiz() {
+            startContainer.style.display = 'none';
+            questionsContainer.classList.add('active');
+            renderAllQuestions();
+        }
+        
+        function renderAllQuestions() {
+            allQuestionsElement.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${q.question}</h3>
+                    <div class="options" id="options-${index}"></div>
+                `;
+                
+                const optionsContainer = questionItem.querySelector(`#options-${index}`);
+                
+                q.options.forEach(option => {
+                    const radioId = `question-${index}-${option.replace(/\s+/g, '-').toLowerCase()}`;
+                    const label = document.createElement('label');
+                    label.innerHTML = `
+                        <input type="radio" name="question-${index}" value="${option}" id="${radioId}" data-question-index="${index}">
+                        ${option}
+                    `;
+                    optionsContainer.appendChild(label);
+                });
+                
+                allQuestionsElement.appendChild(questionItem);
+            });
+            
+            // Add event listeners to all radio buttons
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updateProgress();
+                    showSelectedAnswer(this);
+                });
+            });
+        }
+        
+        function showSelectedAnswer(radio) {
+            const questionIndex = radio.dataset.questionIndex;
+            const questionItem = document.querySelector(`#options-${questionIndex}`).parentElement;
+            
+            // Remove any existing selected answer display
+            const existingSelected = questionItem.querySelector('.selected-answer');
+            if (existingSelected) {
+                existingSelected.remove();
+            }
+            
+            // Add the selected answer next to the question
+            const questionText = questionItem.querySelector('h3');
+            const selectedSpan = document.createElement('span');
+            selectedSpan.className = 'selected-answer';
+            selectedSpan.textContent = `Selected: ${radio.value}`;
+            questionText.appendChild(selectedSpan);
+        }
+        
+        function updateProgress() {
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const progressPercentage = Math.round((answeredQuestions / questions.length) * 100);
+            
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${progressPercentage}%`;
+            answeredCount.textContent = answeredQuestions;
+            
+            // Enable submit button when all questions are answered
+            submitButton.disabled = answeredQuestions < questions.length;
+            
+            // Change button text when all questions are answered
+            if (answeredQuestions === questions.length) {
+                submitButton.innerHTML = '<i class="fas fa-check-circle"></i> View Results';
+            } else {
+                submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Answers';
+            }
+        }
+        
+        function showResult() {
+            let score = 0;
+            let userAnswers = [];
+            
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (selectedOption) {
+                    userAnswers.push({
+                        question: q.question,
+                        answer: selectedOption.value,
+                        isCorrect: selectedOption.value === q.answer
+                    });
+                    
+                    if (selectedOption.value === q.answer) {
+                        score++;
+                    }
+                }
+            });
+            
+            const percentage = ((score / questions.length) * 100).toFixed(2);
+            percentageElement.textContent = `${percentage}%`;
+            
+            let status = '';
+            if (percentage < 30) {
+                status = "You are likely healthy. No significant symptoms detected.";
+            } else if (percentage >= 30 && percentage < 70) {
+                status = "You may have mild symptoms. Consider consulting a doctor.";
+            } else {
+                status = "You may have significant symptoms of Parkinson's. Please consult a doctor.";
+            }
+            
+            statusElement.textContent = status;
+            const randomFact = facts[Math.floor(Math.random() * facts.length)];
+            factContainer.innerHTML = `<p><strong>Did you know?</strong> ${randomFact}</p>`;
+            
+            questionsContainer.classList.remove('active');
+            resultContainer.classList.add('active');
+            
+            // Scroll to top of result container
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function restartQuiz() {
+            // Reset all radio buttons and selected answer displays
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            document.querySelectorAll('.selected-answer').forEach(el => {
+                el.remove();
+            });
+            
+            // Reset progress
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+            answeredCount.textContent = '0';
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Answers';
+            
+            // Show questions container again
+            resultContainer.classList.remove('active');
+            questionsContainer.classList.add('active');
+            
+            // Scroll to top of questions
+            questionsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
